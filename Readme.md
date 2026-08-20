@@ -9,6 +9,8 @@ Building creates an executable and runs it once.
 
 ## Usage
 
+Look at main.cpp for an example game.
+
 ```C++
 class MyGame : public VantageGame
 {
