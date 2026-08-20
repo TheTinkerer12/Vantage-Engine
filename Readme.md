@@ -5,7 +5,7 @@ A game engine I am building for creating highly optimized games with realistic g
 ## Build
 
 Building creates an executable and runs it once.
-'./compile.sh'
+`./compile.sh`
 
 ## Usage
 
