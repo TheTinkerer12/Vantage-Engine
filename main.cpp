@@ -107,5 +107,6 @@ private:
 int main()
 {
     MyGame game;
-    game.start("game");//
+    game.start("game");
+    return 0;
 }
