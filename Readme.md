@@ -9,7 +9,7 @@ Building creates an executable and runs it once.
 
 ## Usage
 
-'''C++
+```C++
 class MyGame : public VantageGame
 {
     //Declare variables and override functions and stuff.
@@ -21,7 +21,7 @@ int main()
     game.start();
     return 0;
 }
-'''
+```
 
 ## Liscense
 
