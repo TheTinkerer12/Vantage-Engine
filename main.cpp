@@ -19,6 +19,7 @@ class MyGame : public VantageGame
 {
     int frame;
     float totalTime;
+    Transform *trans2;
 public:
     MyGame() : VantageGame()
     {
@@ -76,10 +77,14 @@ private:
         Rigidbody* rb = physicsObject.GetComponent<Rigidbody>();
         (*rb).SetGravity(Vector3(0, -9.81f, 0));
 
+        Transform* trans = physicsObject.GetComponent<Transform>();
+        trans->SetScale(Vector3(0.02, 0.1, 0.4));
 
         VantageObject refObject;
         refObject.modelIndex = 0;
         refObject.textureIndex = 0;
+        refObject.AddComponent<Transform>();
+        trans2 = refObject.GetComponent<Transform>();
         
         spawn(std::move(physicsObject));
         spawn(std::move(refObject));
@@ -95,11 +100,12 @@ private:
             frame = 0;
             totalTime = 0;
         }
+        trans2->SetRotation(Vector3(glfwGetTime() * 20, glfwGetTime() * 20, 0));
     }
 };
 
 int main()
 {
     MyGame game;
-    game.start("game");
+    game.start("game");//
 }

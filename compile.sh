@@ -1,1 +1,1 @@
-g++ $(find . -type f -name "*.cpp") glad/glad.c -o Bin/TestGame -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl && ./Bin/TestGame
+mkdir build ; cd build && cmake .. && make && cd .. && ./Bin/TestGame
