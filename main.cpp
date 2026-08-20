@@ -12,68 +12,8 @@
 #include "VantageEngine/Components/IComponent.h"
 #include "VantageEngine/Texture.h"
 #include "VantageEngine/VantageObject.h"
-#include "VantageEngine/Transform.h"
-
-class Spinner : public IComponent
-{
-public:
-    VantageObject* attached = nullptr;
-    const char* GetName() const override
-    {
-        return "TestComponent";
-    }
-
-    void Initialize(VantageObject& attached) override
-    {
-        this->attached = &attached;
-    }
-
-    void Update(float deltaTime) override
-    {
-        attached->transform = glm::translate(attached->transform, glm::vec3(0, 1 * deltaTime, 0));
-    }
-};
-
-class Rigidbody : public IComponent
-{
-    public:
-    Vector3 velocity;
-    Vector3 gravity;
-    VantageObject *attached = nullptr;
-    Transform *trans = nullptr;
-    bool init = false;
-    const char* GetName() const override
-    {
-        return "Rigidbody";
-    }
-
-    void Initialize(VantageObject& attached) override
-    {
-        this->attached = &attached;
-        this->trans = attached.GetComponent<Transform>();
-        init = true;
-    }
-
-    void Update(float deltaTime) override
-    {
-        if (!init)
-        {
-            std::cout << "!init" << std::endl;
-        }
-        velocity += (gravity * deltaTime);
-        trans->Translate(velocity * deltaTime);
-    }
-
-    void SetGravity(Vector3 gravity)
-    {
-        this->gravity = gravity;
-    }
-
-    Vector3 GetGravity()
-    {
-        return gravity;
-    }
-};
+#include "VantageEngine/Components/Transform.h"
+#include "VantageEngine/Components/Rigidbody.h"
 
 class MyGame : public VantageGame
 {
@@ -122,29 +62,27 @@ private:
     {
         frame = 0;
         totalTime = 0;
+
         loadModel("Assets/Models/test.obj", "testObject");
         loadTexture("Assets/Images/rust20_diffuse.jpg", "rust");
-        VantageObject cubeObject;
-        cubeObject.modelIndex = 0;
-        cubeObject.textureIndex = 0;
 
-        cubeObject.AddComponent<Transform>();
+        VantageObject physicsObject;
+        physicsObject.modelIndex = 0;
+        physicsObject.textureIndex = 0;
 
-        cubeObject.AddComponent<Rigidbody>();
-        Transform* trans = cubeObject.GetComponent<Transform>();
+        physicsObject.AddComponent<Transform>();
+        physicsObject.AddComponent<Rigidbody>();
 
-        trans->SetScale(Vector3(10, 1, 2));
-        Rigidbody* rb = cubeObject.GetComponent<Rigidbody>();
+        Rigidbody* rb = physicsObject.GetComponent<Rigidbody>();
         (*rb).SetGravity(Vector3(0, -9.81f, 0));
-        std::cout << (*rb).GetGravity().y;
-        std::cout << "|" << std::endl;
 
-        VantageObject cubeObject2;
-        cubeObject2.modelIndex = 0;
-        cubeObject2.textureIndex = 0;
+
+        VantageObject refObject;
+        refObject.modelIndex = 0;
+        refObject.textureIndex = 0;
         
-        spawn(std::move(cubeObject));
-        spawn(std::move(cubeObject2));
+        spawn(std::move(physicsObject));
+        spawn(std::move(refObject));
     }
 
     void onUpdate() override

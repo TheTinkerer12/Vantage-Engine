@@ -2,9 +2,9 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 #pragma once
-#include "../VantageMath/Vectors/Vector3.h"
-#include "Components/IComponent.h"
-#include "VantageObject.h"
+#include "../../VantageMath/Vectors/Vector3.h"
+#include "IComponent.h"
+#include "../VantageObject.h"
 #include <glm/glm.hpp>
 
 class Transform : public IComponent
