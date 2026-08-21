@@ -145,9 +145,9 @@ void VantageGame::start(const char *name)
 
 void VantageGame::update()
 {
-    float currentFrame = glfwGetTime();
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
+    time = glfwGetTime();
+    deltaTime = time - lastFrame;
+    lastFrame = time;
     if (first)
     {
         first = false;

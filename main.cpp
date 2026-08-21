@@ -100,7 +100,7 @@ private:
             frame = 0;
             totalTime = 0;
         }
-        trans2->SetRotation(Vector3(glfwGetTime() * 20, glfwGetTime() * 20, 0));
+        trans2->SetRotation(Vector3(time * 20, time * 20, 0));
     }
 };
 
