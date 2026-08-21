@@ -20,6 +20,8 @@ class MyGame : public VantageGame
     int frame;
     float totalTime;
     Transform *trans2;
+    float lastX = 400, lastY = 300;
+    bool firstMouse = true;
 public:
     MyGame() : VantageGame()
     {
@@ -59,6 +61,44 @@ private:
         }
     }
 
+    void onCursorMoved(double newx, double newy) override
+    {
+        if (firstMouse) // initially set to true
+        {
+            lastX = newx;
+            lastY = newy;
+            firstMouse = false;
+        }
+        float xoffset = newx - lastX;
+        float yoffset = lastY - newy;
+        lastX = newx;
+        lastY = newy;
+
+        const float sensitivity = 0.1f;
+        xoffset *= sensitivity;
+        yoffset *= sensitivity;
+        yaw   += xoffset;
+        pitch += yoffset;
+        if(pitch > 89.0f)
+        {
+            pitch =  89.0f;
+        }
+        
+        if(pitch < -89.0f)
+        {
+            pitch = -89.0f;
+        }
+    }
+
+    void onCursorScrolled(double xoffset, double yoffset) override
+    {
+            fov -= (float)yoffset;
+        if (fov < 1.0f)
+            fov = 1.0f;
+        if (fov > 45.0f)
+            fov = 45.0f; 
+    }
+
     void onStart() override
     {
         frame = 0;
@@ -66,6 +106,8 @@ private:
 
         loadModel("Assets/Models/test.obj", "testObject");
         loadTexture("Assets/Images/rust20_diffuse.jpg", "rust");
+
+        lockCursor();
 
         VantageObject physicsObject;
         physicsObject.modelIndex = 0;

@@ -28,13 +28,11 @@ public:
     float yaw = -90.0f;
     float pitch = 0;
     float fov = 45;
-    float lastX = 400, lastY = 300;
     const char *name;
 
 private:
 
     bool first = true;
-    bool firstMouse = true;
     GLFWwindow* window;
     float lastFrame = 0.0f;
     Shader objectShader;
@@ -63,6 +61,11 @@ public:
     bool keyPressed(int key);
     void spawn(VantageObject&& vantageObject);
     virtual void onKeyPressed() = 0;
+    void lockCursor();
+    void unlockCursor();
+
+    virtual void onCursorMoved(double newx, double newy) = 0;
+    virtual void onCursorScrolled(double xoffset, double yoffset) = 0;
 };
 
 #endif

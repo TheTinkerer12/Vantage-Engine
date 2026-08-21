@@ -30,33 +30,9 @@ void VantageGame::render(){
     glfwPollEvents();
 }
 
-void VantageGame::mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void VantageGame::mouse_callback(GLFWwindow* window, double newx, double newy)
 {
-    if (firstMouse) // initially set to true
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
-    lastX = xpos;
-    lastY = ypos;
-
-    const float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-    yaw   += xoffset;
-    pitch += yoffset;
-    if(pitch > 89.0f)
-    {
-        pitch =  89.0f;
-    }
-    
-    if(pitch < -89.0f)
-    {
-        pitch = -89.0f;
-    }
+    onCursorMoved(newx, newy);
 
     glm::vec3 direction;
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -67,11 +43,7 @@ void VantageGame::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 void VantageGame::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    fov -= (float)yoffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 45.0f)
-        fov = 45.0f; 
+    onCursorScrolled(xoffset, yoffset);
 }
 
 void VantageGame::static_mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -156,7 +128,6 @@ void VantageGame::start(const char *name)
     float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
     glfwSetWindowUserPointer(window, this);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, static_mouse_callback);
     glfwSetScrollCallback(window, static_scroll_callback); 
     glEnable(GL_DEPTH_TEST);
@@ -206,4 +177,14 @@ void VantageGame::spawn(VantageObject&& vantageObject)
         component->Initialize(*object);
     }
     sceneObjects.push_back(std::move(object));
+}
+
+void VantageGame::lockCursor()
+{
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void VantageGame::unlockCursor()
+{
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
