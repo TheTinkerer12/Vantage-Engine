@@ -8,11 +8,11 @@ list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_BINARY_DIR}/.*")
 
 set(GLAD_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/glad/glad.c")
 
-add_executable(my_program ${SOURCES} ${GLAD_SOURCE})
+add_executable(TestGame ${SOURCES} ${GLAD_SOURCE})
 
-target_include_directories(my_program PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/glad")
+target_include_directories(TestGame PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/glad")
 
-target_link_libraries(my_program PRIVATE 
+target_link_libraries(TestGame PRIVATE 
     glfw 
     GL 
     X11 
