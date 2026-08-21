@@ -103,6 +103,34 @@ void VantageGame::loadTexture(const char *imagePath, const char *name)
     textures.push_back(Texture(VantageUtilities::loadImage(imagePath), name));
 }
 
+int VantageGame::findModel(const char *name)
+{
+    int index = 0;
+    for (Model model : models)
+    {
+        if (model.name == name)
+        {
+            return index;
+        }
+        index++;
+    }
+    return -1;
+}
+
+int VantageGame::findTexture(const char *name)
+{
+    int index = 0;
+    for (Texture tex : textures)
+    {
+        if (tex.name == name)
+        {
+            return index;
+        }
+        index++;
+    }
+    return -1;
+}
+
 void VantageGame::start(const char *name)
 {
     glfwInit();

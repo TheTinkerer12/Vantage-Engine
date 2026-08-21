@@ -56,6 +56,8 @@ private:
 public:
     void loadModel(const char *filePath, const char *name);
     void loadTexture(const char *imagePath, const char *name);
+    int findModel(const char *name);
+    int findTexture(const char *name);
     void start(const char *name);
     void update();
     bool keyPressed(int key);

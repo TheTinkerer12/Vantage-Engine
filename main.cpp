@@ -81,8 +81,8 @@ private:
         trans->SetScale(Vector3(0.02, 0.1, 0.4));
 
         VantageObject refObject;
-        refObject.modelIndex = 0;
-        refObject.textureIndex = 0;
+        refObject.modelIndex = findModel("testObject");
+        refObject.textureIndex = findTexture("rust");
         refObject.AddComponent<Transform>();
         trans2 = refObject.GetComponent<Transform>();
         
