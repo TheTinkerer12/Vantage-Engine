@@ -7,6 +7,7 @@
 #include "VantageObject.h"
 #include "Texture.h"
 #include "Model.h"
+#include "Managers/IManager.h"
 #include "../shader.h"
 
 class VantageGame
@@ -20,6 +21,7 @@ protected:
     }
 
 public:
+    std::vector<std::unique_ptr<IManager>> managers;
     float deltaTime = 0.0f;
     float time = 0.0f;
     glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
@@ -59,10 +61,30 @@ public:
     void start(const char *name);
     void update();
     bool keyPressed(int key);
-    void spawn(VantageObject&& vantageObject);
+    VantageObject& spawn();
     virtual void onKeyPressed() = 0;
     void lockCursor();
     void unlockCursor();
+
+    template <typename T>
+    void AddManager()
+    {
+        managers.push_back(std::make_unique<T>());
+        auto *t = GetManager<T>();
+        t->Initialize();
+    }
+
+    template <typename T>
+    T* GetManager() 
+    {
+        for (const auto& manager : managers) 
+        {
+            if (auto casted = dynamic_cast<T*>(manager.get())) {
+                return casted;
+            }
+        }
+        return nullptr;
+    }
 
     virtual void onCursorMoved(double newx, double newy) = 0;
     virtual void onCursorScrolled(double xoffset, double yoffset) = 0;

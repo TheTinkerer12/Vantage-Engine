@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
 #include "Components/IComponent.h"
+#include "Managers/IManager.h"
 
 class VantageObject
 {
@@ -15,6 +16,7 @@ public:
     int textureIndex;
     glm::mat4 transform = glm::mat4(1);
     std::vector<std::unique_ptr<IComponent>> components;
+    std::vector<std::unique_ptr<IManager>>* managers = nullptr;
 
     VantageObject() = default;
     VantageObject(const VantageObject&) = delete;
@@ -35,12 +37,34 @@ public:
     {
         for (const auto& component : components) 
         {
-            // dynamic_cast returns nullptr if the component is NOT of type T
-            if (auto casted = dynamic_cast<T*>(component.get())) {
-                return casted; // Found it!
+            if (auto casted = dynamic_cast<T*>(component.get()))
+            {
+                return casted;
             }
         }
-        return nullptr; // Not found
+        return nullptr;
+    }
+
+    template <typename T>
+    T* GetManager()
+    {
+        if (managers == nullptr)
+        {
+            return nullptr;
+        }
+        for (const auto& manager : *managers)
+        {
+            if (auto casted = dynamic_cast<T*>(manager.get()))
+            {
+                return casted;
+            }
+        }
+        return nullptr;
+    }
+
+    void Initialize(std::vector<std::unique_ptr<IManager>>& gameManagers)
+    {
+        managers = &gameManagers;
     }
 };
 

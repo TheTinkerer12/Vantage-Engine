@@ -20,6 +20,7 @@ target_link_libraries(TestGame PRIVATE
     Xrandr 
     Xi 
     dl
+    sfml-audio
 )
 
 set_target_properties(TestGame PROPERTIES 

@@ -14,6 +14,8 @@
 #include "VantageEngine/VantageObject.h"
 #include "VantageEngine/Components/Transform.h"
 #include "VantageEngine/Components/Rigidbody.h"
+#include "VantageEngine/Managers/AudioManager.h"
+#include "VantageEngine/Components/AudioPlayer.h"
 
 class MyGame : public VantageGame
 {
@@ -22,6 +24,7 @@ class MyGame : public VantageGame
     Transform *trans2;
     float lastX = 400, lastY = 300;
     bool firstMouse = true;
+    AudioPlayer *currentPlayer;
 public:
     MyGame() : VantageGame()
     {
@@ -109,12 +112,15 @@ private:
 
         lockCursor();
 
-        VantageObject physicsObject;
+        AddManager<AudioManager>();
+
+        VantageObject& physicsObject = spawn();
         physicsObject.modelIndex = 0;
         physicsObject.textureIndex = 0;
-
         physicsObject.AddComponent<Transform>();
         physicsObject.AddComponent<Rigidbody>();
+        physicsObject.AddComponent<AudioPlayer>();
+        currentPlayer = physicsObject.GetComponent<AudioPlayer>();
 
         Rigidbody* rb = physicsObject.GetComponent<Rigidbody>();
         (*rb).SetGravity(Vector3(0, -9.81f, 0));
@@ -122,14 +128,11 @@ private:
         Transform* trans = physicsObject.GetComponent<Transform>();
         trans->SetScale(Vector3(0.02, 0.1, 0.4));
 
-        VantageObject refObject;
+        VantageObject& refObject = spawn();
         refObject.modelIndex = findModel("testObject");
         refObject.textureIndex = findTexture("rust");
         refObject.AddComponent<Transform>();
         trans2 = refObject.GetComponent<Transform>();
-        
-        spawn(std::move(physicsObject));
-        spawn(std::move(refObject));
     }
 
     void onUpdate() override
@@ -138,6 +141,7 @@ private:
         totalTime += deltaTime;
         if (totalTime > 1)
         {
+            currentPlayer->PlaySound("Assets/Sounds/tick.wav");
             std::cout << frame / totalTime << std::endl;
             frame = 0;
             totalTime = 0;

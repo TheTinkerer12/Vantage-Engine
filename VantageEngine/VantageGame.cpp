@@ -169,14 +169,12 @@ bool VantageGame::keyPressed(int key)
     return glfwGetKey(window, key) == GLFW_PRESS;
 }
 
-void VantageGame::spawn(VantageObject&& vantageObject)
+VantageObject& VantageGame::spawn()
 {
-    auto object = std::make_unique<VantageObject>(std::move(vantageObject));
-    for (auto& component : object->components)
-    {
-        component->Initialize(*object);
-    }
-    sceneObjects.push_back(std::move(object));
+    sceneObjects.push_back(std::make_unique<VantageObject>());
+    VantageObject &refObject = *sceneObjects.back();
+    refObject.Initialize(managers);
+    return refObject;
 }
 
 void VantageGame::lockCursor()
