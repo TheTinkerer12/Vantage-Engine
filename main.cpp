@@ -103,6 +103,19 @@ private:
             fov = 45.0f; 
     }
 
+    void onMouseButtonPressed(int button) override
+    {
+        if (button == GLFW_MOUSE_BUTTON_LEFT)
+        {
+            currentPlayer->PlaySound("Assets/Sounds/tick.wav");
+        }   
+    }
+
+    void onMouseButtonReleased(int button) override
+    {
+
+    }
+
     void onStart() override
     {
         frame = 0;
@@ -148,7 +161,6 @@ private:
             std::cout << frame / totalTime << std::endl;
             frame = 0;
             totalTime = 0;
-            currentPlayer->PlaySound("Assets/Sounds/tick.wav");
         }
         trans2->SetRotation(Vector3(time * 20, time * 20, 0));
     }

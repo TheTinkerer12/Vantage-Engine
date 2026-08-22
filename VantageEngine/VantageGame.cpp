@@ -41,6 +41,17 @@ void VantageGame::mouse_callback(GLFWwindow* window, double newx, double newy)
     cameraFront = glm::normalize(direction);
 }
 
+void VantageGame::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (action == GLFW_PRESS){
+        onMouseButtonPressed(button);
+    }
+    if (action == GLFW_RELEASE)
+    {
+        onMouseButtonReleased(button);
+    }
+}
+
 void VantageGame::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     onCursorScrolled(xoffset, yoffset);
@@ -57,6 +68,14 @@ void VantageGame::static_scroll_callback(GLFWwindow* window, double xoffset, dou
     auto* instance = static_cast<VantageGame*>(glfwGetWindowUserPointer(window));
     if (instance) {
         instance->scroll_callback(window, xoffset, yoffset);
+    }
+}
+
+void VantageGame::static_mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    auto* instance = static_cast<VantageGame*>(glfwGetWindowUserPointer(window));
+    if (instance) {
+        instance->mouse_button_callback(window, button, action, mods);
     }
 }
 
@@ -129,7 +148,8 @@ void VantageGame::start(const char *name)
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
     glfwSetWindowUserPointer(window, this);
     glfwSetCursorPosCallback(window, static_mouse_callback);
-    glfwSetScrollCallback(window, static_scroll_callback); 
+    glfwSetScrollCallback(window, static_scroll_callback);
+    glfwSetMouseButtonCallback(window, static_mouse_button_callback);
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, 800, 600);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);

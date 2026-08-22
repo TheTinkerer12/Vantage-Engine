@@ -49,6 +49,8 @@ private:
     void render();
     void mouse_callback(GLFWwindow* window, double xpos, double ypos);
     void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+    void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
+    static void static_mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void static_mouse_callback(GLFWwindow* window, double xpos, double ypos);
     static void static_scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -88,6 +90,8 @@ public:
 
     virtual void onCursorMoved(double newx, double newy) = 0;
     virtual void onCursorScrolled(double xoffset, double yoffset) = 0;
+    virtual void onMouseButtonPressed(int button) = 0;
+    virtual void onMouseButtonReleased(int button) = 0;
 };
 
 #endif
