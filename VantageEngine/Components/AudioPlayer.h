@@ -4,6 +4,7 @@
 #pragma once
 #include "../VantageObject.h"
 #include "../Managers/AudioManager.h"
+#include <iostream>
 
 class AudioPlayer : public IComponent
 {
@@ -31,6 +32,11 @@ public:
 
     void PlayMusic(const char *filePath)
     {
+        if (manager == nullptr)
+        {
+            std::cout << "AudioPlayer has no AudioManager" << std::endl;
+            return;
+        }
         sf::Music& music = manager->loadMusic(filePath);
         music.play();
     }

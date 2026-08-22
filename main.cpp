@@ -25,6 +25,7 @@ class MyGame : public VantageGame
     float lastX = 400, lastY = 300;
     bool firstMouse = true;
     AudioPlayer *currentPlayer;
+    AudioPlayer *currentPlayer2;
 public:
     MyGame() : VantageGame()
     {
@@ -133,6 +134,9 @@ private:
         refObject.textureIndex = findTexture("rust");
         refObject.AddComponent<Transform>();
         trans2 = refObject.GetComponent<Transform>();
+        refObject.AddComponent<AudioPlayer>();
+        currentPlayer2 = refObject.GetComponent<AudioPlayer>();
+        currentPlayer2->PlayMusic("Assets/Music/music.wav");
     }
 
     void onUpdate() override
@@ -141,10 +145,10 @@ private:
         totalTime += deltaTime;
         if (totalTime > 1)
         {
-            currentPlayer->PlaySound("Assets/Sounds/tick.wav");
             std::cout << frame / totalTime << std::endl;
             frame = 0;
             totalTime = 0;
+            currentPlayer->PlaySound("Assets/Sounds/tick.wav");
         }
         trans2->SetRotation(Vector3(time * 20, time * 20, 0));
     }
